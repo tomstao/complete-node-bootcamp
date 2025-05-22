@@ -1,6 +1,7 @@
 const fs = require('fs');
 const http = require('http');
 const url = require('url');
+const path = require("node:path");
 
 // const hello = 'Hello world!';
 // console.log(hello);
@@ -35,6 +36,9 @@ const url = require('url');
 // console.log('It will read the file.');
 
 // Server
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`,'utf-8');
+const dataObj = JSON.parse(data);
+
 const server = http.createServer((req, res) => {
     console.log(req.url);
 
@@ -43,7 +47,19 @@ const server = http.createServer((req, res) => {
         res.end('This is the overview page!');
     } else if (pathName === '/product') {
         res.end('This is the product page!');
-    } else {
+    } else if (pathName === '/api') {
+
+        // fs.readFile(`${__dirname}/dev-data/data.json`,'utf-8', (err, data) => {
+        //         const productData = JSON.parse(data);
+        //         res.writeHead(200, {'Content-Type': 'application/json'});
+        //         res.end(data);
+        // });
+
+        // res.end('API');
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end(data);
+    }
+    else {
         res.writeHead(404, {
             'content-type': 'text/html',
             'my-own-head' : 'hello world'
